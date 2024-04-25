@@ -23,35 +23,35 @@ console.log(galleryList);
 
 ulGalleryEl.insertAdjacentHTML("beforeend", galleryList);
 
+function makeModalWindow(src) {
+  const instance = basicLightbox.create(`
+<img src="${src}">
+`);
+  return instance;
+}
+
 function selectPicture(event) {
   event.preventDefault();
   const currentPicture = event.target;
   if (currentPicture.nodeName !== "IMG") {
     return;
   }
-
-  const instance = basicLightbox.create(`
-    <img src="${currentPicture.dataset.source}">
-`);
+  const instance = makeModalWindow(currentPicture.dataset.source);
   instance.show();
-  if (instance.show()) {
-    document.addEventListener("keydown", (event) => {
-      if (event.code !== "Escape") {
-        return;
-      }
-      console.log(event.code);
-      instance.close();
-      document.removeEventListener("keydown", escapeKeyPressed);
-    });
-  }
+  instance.close();
 }
 
 ulGalleryEl.addEventListener("click", selectPicture);
 
-function escapeKeyPressed(event) {
+function addListenerToOpenWindow(inst) {
+  if (inst.show()) {
+    document.addEventListener("keydown", escapeKeyPressed());
+  }
+}
+
+function escapeKeyPressed(event, inst) {
   if (event.code !== "Escape") {
     return;
   }
-  console.log(event.code);
-  document.removeEventListener("keydown", escapeKeyPressed);
+  //console.log(event.code);
 }
