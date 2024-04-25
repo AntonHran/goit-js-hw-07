@@ -3,6 +3,8 @@ import { galleryItems } from "./gallery-items.js";
 
 console.log(galleryItems);
 
+let instance;
+
 const ulGalleryEl = document.querySelector(".gallery");
 
 function makeLiEl({ preview, original, description }) {
@@ -24,10 +26,10 @@ console.log(galleryList);
 ulGalleryEl.insertAdjacentHTML("beforeend", galleryList);
 
 function makeModalWindow(src) {
-  const instance = basicLightbox.create(`
+  instance = basicLightbox.create(`
 <img src="${src}">
 `);
-  return instance;
+  instance.show();
 }
 
 function selectPicture(event) {
@@ -36,22 +38,24 @@ function selectPicture(event) {
   if (currentPicture.nodeName !== "IMG") {
     return;
   }
-  const instance = makeModalWindow(currentPicture.dataset.source);
-  instance.show();
-  instance.close();
+  makeModalWindow(currentPicture.dataset.source);
+
+  addListenerToOpenWindow(instance);
 }
 
 ulGalleryEl.addEventListener("click", selectPicture);
 
 function addListenerToOpenWindow(inst) {
   if (inst.show()) {
-    document.addEventListener("keydown", escapeKeyPressed());
+    window.addEventListener("keydown", escapeKeyPressed);
   }
 }
 
-function escapeKeyPressed(event, inst) {
+function escapeKeyPressed(event) {
   if (event.code !== "Escape") {
     return;
   }
-  //console.log(event.code);
+  console.log(event.code);
+  instance.close();
+  window.removeEventListener("keydown", escapeKeyPressed);
 }
