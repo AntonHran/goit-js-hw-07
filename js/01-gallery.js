@@ -1,7 +1,7 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-console.log(galleryItems);
+// console.log(galleryItems);
 
 let instance;
 
@@ -21,7 +21,6 @@ function makeLiEl({ preview, original, description }) {
 }
 
 const galleryList = galleryItems.map(makeLiEl).join("");
-console.log(galleryList);
 
 ulGalleryEl.insertAdjacentHTML("beforeend", galleryList);
 
@@ -31,19 +30,6 @@ function makeModalWindow(src) {
 `);
   instance.show();
 }
-
-function selectPicture(event) {
-  event.preventDefault();
-  const currentPicture = event.target;
-  if (currentPicture.nodeName !== "IMG") {
-    return;
-  }
-  makeModalWindow(currentPicture.dataset.source);
-
-  addListenerToOpenWindow(instance);
-}
-
-ulGalleryEl.addEventListener("click", selectPicture);
 
 function addListenerToOpenWindow(inst) {
   if (inst.show()) {
@@ -59,3 +45,16 @@ function escapeKeyPressed(event) {
   instance.close();
   window.removeEventListener("keydown", escapeKeyPressed);
 }
+
+function selectPicture(event) {
+  event.preventDefault();
+  const currentPicture = event.target;
+  if (currentPicture.nodeName !== "IMG") {
+    return;
+  }
+  makeModalWindow(currentPicture.dataset.source);
+
+  addListenerToOpenWindow(instance);
+}
+
+ulGalleryEl.addEventListener("click", selectPicture);
