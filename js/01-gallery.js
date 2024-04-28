@@ -1,7 +1,4 @@
 import { galleryItems } from "./gallery-items.js";
-// Change code below this line
-
-// console.log(galleryItems);
 
 let instance;
 
@@ -25,9 +22,7 @@ const galleryList = galleryItems.map(makeLiEl).join("");
 ulGalleryEl.insertAdjacentHTML("beforeend", galleryList);
 
 function makeModalWindow(src) {
-  instance = basicLightbox.create(`
-<img src="${src}">
-`);
+  instance = basicLightbox.create(`<img src="${src}">`);
   instance.show();
 }
 
